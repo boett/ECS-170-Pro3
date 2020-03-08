@@ -80,7 +80,7 @@ def compute_td_loss(model, target_model, batch_size, gamma, replay_buffer): # co
 
     for x in range(batch_size):
         QValueTargetModel = target_model.forward(state[x]).data
-        loss += math.pow(reward[x] - QValueTargetModel[x][action[x]].item())
+        loss += (reward[x] - QValueTargetModel[x][action[x]].item())**2
 
 
     #QValueTargetModel = target_model.forward(state).data
