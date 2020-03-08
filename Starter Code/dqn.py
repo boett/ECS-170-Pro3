@@ -103,16 +103,22 @@ class ReplayBuffer(object):
         #print("IN SAMPLE ")
         #print("sample self = ", self)
 
-        i = random.randint(0, batch_size)
+        pullFrom = self.buffer
+
+        state = []
+        action = []
+        reward = []
+        next_state = []
+        done = []
 
         pullFrom = self.buffer
 
-        state = pullFrom[i][0]
-        action = int(pullFrom[i][1])
-        reward = int(pullFrom[i][2])
-        next_state = pullFrom[i][3]
-        done = pullFrom[i][4]
-
+        for i in pullFrom:
+            state.append(pullFrom[i][0])
+            action.append(int(pullFrom[i][1]))
+            reward.append(int(pullFrom[i][2]))
+            next_state.append(pullFrom[i][3])
+            done.append(pullFrom[i][4])
 
 
 
