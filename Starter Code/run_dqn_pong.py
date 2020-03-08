@@ -66,7 +66,6 @@ for frame_idx in range(1, num_frames + 1):  # plays until player or model gets s
 
     if len(replay_buffer) > replay_initial: #if number of plays has reached the limit calculate loss and optimize update model
         loss = compute_td_loss(model, target_model, batch_size, gamma, replay_buffer)
-        print("loss = ", loss)
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
