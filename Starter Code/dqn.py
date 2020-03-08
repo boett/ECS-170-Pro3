@@ -58,9 +58,9 @@ class QLearner(nn.Module):
 
         else:
             action = random.randrange(self.env.action_space.n)
-        print("self = ", self)
-        print("------------------------------")
-        print("state = ", state)
+        #print("self = ", self)
+        #print("------------------------------")
+        #print("state = ", state)
         return action
 
     def copy_from(self, target):
@@ -96,8 +96,8 @@ class ReplayBuffer(object):
     def sample(self, batch_size):
         # TODO: Randomly sampling data with specific batch size from the buffer
 
-        print("IN SAMPLE ")
-        print("sample self = ", self)
+        #print("IN SAMPLE ")
+        #print("sample self = ", self)
 
         state = Variable(torch.FloatTensor(np.float32(state)))
         next_state = Variable(torch.FloatTensor(np.float32(next_state)).squeeze(1), requires_grad=True)
