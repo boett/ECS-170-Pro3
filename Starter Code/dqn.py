@@ -134,11 +134,11 @@ class ReplayBuffer(object):
         done = np.array([])
 
         for frame in RandomSample:
-            state.append(frame[0])
-            action.append(frame[1])
-            reward.append(frame[2])
-            next_state.append(frame[3])
-            done.append(frame[4])
+            state.np.append(frame[0])
+            action.np.append(frame[1])
+            reward.np.append(frame[2])
+            next_state.np.append(frame[3])
+            done.np.append(frame[4])
 
 
         return state, action, reward, next_state, done
