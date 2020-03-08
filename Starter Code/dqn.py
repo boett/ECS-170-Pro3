@@ -113,12 +113,12 @@ class ReplayBuffer(object):
 
         pullFrom = self.buffer
 
-        for i in pullFrom:
-            state.append(pullFrom[i][0])
-            action.append(int(pullFrom[i][1]))
-            reward.append(int(pullFrom[i][2]))
-            next_state.append(pullFrom[i][3])
-            done.append(pullFrom[i][4])
+        for frame in pullFrom:
+            state.append(frame[0])
+            action.append(frame[1])
+            reward.append(frame[2])
+            next_state.append(frame[3])
+            done.append(frame[4])
 
 
 
