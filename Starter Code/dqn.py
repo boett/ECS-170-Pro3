@@ -50,7 +50,7 @@ class QLearner(nn.Module):
             # TODO: Given state, you should write code to get the Q value and chosen action
 
 
-            action = random.randrange(self.env.action_space.n)
+            action = torch.argmax(self(state)).item() # gets max Q value of the given state.
 
 
 
@@ -96,6 +96,9 @@ class ReplayBuffer(object):
 
     def sample(self, batch_size):
         # TODO: Randomly sampling data with specific batch size from the buffer
+
+        print("IN SAMPLE ")
+        print("sample self = ", self)
 
         state = Variable(torch.FloatTensor(np.float32(state)))
         next_state = Variable(torch.FloatTensor(np.float32(next_state)).squeeze(1), requires_grad=True)
