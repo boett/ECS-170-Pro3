@@ -84,7 +84,7 @@ def compute_td_loss(model, target_model, batch_size, gamma, replay_buffer): # co
         QValueTargetModel = target_model.forward(state[x]).data
         lossCalc.append((reward[x] - QValueTargetModel[0][action[x]].item())**2)
 
-    loss = Variable(torch.FloatTensor(lossCalc))
+    loss = Variable(torch.FloatTensor(np.float32(lossCalc)).squeeze(1), requires_grad=True)
 
     print("loss in compute_td_loss = ", loss)
 
