@@ -77,14 +77,15 @@ def compute_td_loss(model, target_model, batch_size, gamma, replay_buffer): # co
     done = Variable(torch.FloatTensor(done))
     # implement the loss function here
     
-    QValues = model.forward(state).data
-    TargetQValues = target_model.forward(state).data
+    q_values = model.forward(state).data
+    next_q_values = target_model.forward(state)
 
-    AllQValues = QValues.gather(1, action.unsqueeze(1)).squeeze(1)
-    AllTargetQValue = TargetQValues.max(0)[1]
+    q_value = q_values.gather(1, action.unsqueeze(1)).squeeze(1)
+    next_q_value = next_q_values.max(1)[0]
 
-    DesiredQVal = reward + gamma * AllTargetQValue * (1 - done)
-    loss = (AllQValues - Variable(DesiredQVal.data, requires_grade = True)).pow(2).mean()
+    expected_q_value = reward + gamma * next_q_value * (1 - done)
+
+    loss = (q_value - Variable(expected_q_value.data, requires_grade = True)).pow(2).mean()
 
 
     # print("target_model = ", target_model)
@@ -128,17 +129,17 @@ class ReplayBuffer(object):
         RandomSample = random.sample(self.buffer, batch_size)
 
         state = np.array([])
-        action = np.array([])
-        reward = np.array([])
+        action = []
+        reward = []
         next_state = np.array([])
-        done = np.array([])
+        done = []
 
         for frame in RandomSample:
             np.append(state, frame[0])
-            np.append(action, frame[1])
-            np.append(reward, frame[2])
+            action.append(frame[1])
+            reward.append(frame[2])
             np.append(next_state, frame[3])
-            np.append(done, frame[4])
+            done.append(frame[4])
 
 
         return state, action, reward, next_state, done
