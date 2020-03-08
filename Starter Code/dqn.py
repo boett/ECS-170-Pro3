@@ -126,20 +126,24 @@ class ReplayBuffer(object):
         #print("IN SAMPLE ")
         #print("sample self = ", self)
 
-        RandomSample = random.sample(self.buffer, batch_size)
+        # RandomSample = random.sample(self.buffer, batch_size)
 
-        state = np.array([])
-        action = []
-        reward = []
-        next_state = np.array([])
-        done = []
+        # state = np.array([])
+        # action = []
+        # reward = []
+        # next_state = np.array([])
+        # done = []
 
-        for frame in RandomSample:
-            np.append(state, frame[0])
-            action.append(frame[1])
-            reward.append(frame[2])
-            np.append(next_state, frame[3])
-            done.append(frame[4])
+        # for frame in RandomSample:
+        #     np.append(state, frame[0])
+        #     action.append(frame[1])
+        #     reward.append(frame[2])
+        #     np.append(next_state, frame[3])
+        #     done.append(frame[4])
+
+        state, action, reward, next_state, done = zip(*random.sample(self.buffer, batch_size))
+        state = np.concatenate(state)
+        next_state = np.concatenate(next_state)
 
 
         return state, action, reward, next_state, done
