@@ -95,7 +95,7 @@ class ReplayBuffer(object):
 
     def sample(self, batch_size):
 
-        print("Sample self = ", self)
+        print("Sample self = ", self.buffer)
         # TODO: Randomly sampling data with specific batch size from the buffer
 
         #buffer = (self.buffer)
