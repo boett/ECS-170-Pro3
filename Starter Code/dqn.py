@@ -76,18 +76,27 @@ def compute_td_loss(model, target_model, batch_size, gamma, replay_buffer): # co
     reward = Variable(torch.FloatTensor(reward))
     done = Variable(torch.FloatTensor(done))
     # implement the loss function here
-    lossCalc = 0
+    
+    QValues = model.forward(state).data
+    TargetQValues = target_model.forward(state).data
 
-    print("target_model = ", target_model)
+    AllQValues = QValues.gather(1, action.unsqueeze(1)).squeeze(1)
+    AllTargetQValue = TargetQValues.max(0)[1]
 
-    for x in range(batch_size):
-        QValueTargetModel = target_model.forward(state[x]).data
-        #lossCalc.append((reward[x] - QValueTargetModel[0][action[x]].item())**2)
-        lossCalc += ((reward[x] - QValueTargetModel[0][action[x]].item())**2)
+    DesiredQVal = reward + gamma * AllTargetQValue * (1 - done)
+    loss = (AllQValues - Variable(DesiredQVal.data, requires_grade = True)).pow(2).mean()
 
-    loss = Variable(torch.LongTensor(lossCalc))
 
-    print("loss in compute_td_loss = ", loss)
+    # print("target_model = ", target_model)
+
+    # for x in range(batch_size):
+    #     QValueTargetModel = target_model.forward(state[x]).data
+    #     #lossCalc.append((reward[x] - QValueTargetModel[0][action[x]].item())**2)
+    #     lossCalc += ((reward[x] - QValueTargetModel[0][action[x]].item())**2)
+
+    # loss = Variable(torch.LongTensor(lossCalc))
+
+    #print("loss in compute_td_loss = ", loss)
 
 
     #QValueTargetModel = target_model.forward(state).data
@@ -118,12 +127,11 @@ class ReplayBuffer(object):
 
         RandomSample = random.sample(self.buffer, batch_size)
 
-        state = []
-        action = []
-        reward = []
-        next_state = []
-        done = []
-
+        state = np.array([])
+        action = np.array([])
+        reward = np.array([])
+        next_state = np.array([])
+        done = np.array([])
 
         for frame in RandomSample:
             state.append(frame[0])
