@@ -105,6 +105,12 @@ class ReplayBuffer(object):
 
         pullFrom = self.buffer
 
+        print("self.buffer[0][0] (state) = ", pullFrom[0][0])
+        print("self.buffer[0][1] (action) = ", pullFrom[0][1])
+        print("self.buffer[0][2] (reward) = ", pullFrom[0][2])
+        print("self.buffer[0][3] (next_state) = ", pullFrom[0][3])
+        print("self.buffer[0][4] (done) = ", pullFrom[0][4])
+
         state = []
         next_state = []
         action = []
@@ -112,7 +118,6 @@ class ReplayBuffer(object):
         done = []
 
         for i in pullFrom:
-            state.append(pullFrom[i][0])
             action.append(pullFrom[i][1])   
             reward.append(pullFrom[i][2])   
             next_state.append(pullFrom[i][3])
