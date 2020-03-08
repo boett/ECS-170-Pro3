@@ -111,7 +111,7 @@ class ReplayBuffer(object):
         action = int(pullFrom[i][1])
         reward = int(pullFrom[i][2])
         next_state = pullFrom[i][3]
-        done = pullFrom[i][4]
+        done = list(pullFrom[i][4])
 
 
 
@@ -120,7 +120,7 @@ class ReplayBuffer(object):
         print("self.buffer[0][1] (action) = ", int(pullFrom[0][1]))
         print("self.buffer[0][2] (reward) = ", int(pullFrom[0][2]))
         print("self.buffer[0][3] (next_state) = ", pullFrom[0][3])
-        print("self.buffer[0][4] (done) = ", bool(pullFrom[0][4]))
+        print("self.buffer[0][4] (done) = ", bool(pullFrom[0][4])
 
         return state, action, reward, next_state, done
 
