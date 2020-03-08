@@ -78,6 +78,8 @@ def compute_td_loss(model, target_model, batch_size, gamma, replay_buffer): # co
     # implement the loss function here
     loss = 0
 
+    print("target_model = ", target_model)
+
     for x in range(batch_size):
         QValueTargetModel = target_model.forward(state[x]).data
         loss += (reward[x] - QValueTargetModel[x][action[x]].item())**2
