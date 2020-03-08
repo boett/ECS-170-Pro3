@@ -128,13 +128,6 @@ class ReplayBuffer(object):
             done.append(frame[4])
 
 
-
-        print("self.buffer[0][0] (state) = ", pullFrom[0][0])
-        print("self.buffer[0][1] (action) = ", int(pullFrom[0][1]))
-        print("self.buffer[0][2] (reward) = ", int(pullFrom[0][2]))
-        print("self.buffer[0][3] (next_state) = ", pullFrom[0][3])
-        print("self.buffer[0][4] (done) = ", bool(pullFrom[0][4]))
-
         return state, action, reward, next_state, done
 
     def __len__(self):
