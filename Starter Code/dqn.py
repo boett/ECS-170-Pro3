@@ -78,7 +78,7 @@ def compute_td_loss(model, target_model, batch_size, gamma, replay_buffer): # co
     # implement the loss function here
 
     QValueTargetModel = target_model.forward(state).data
-    loss = (reward - QValueTargetModel[0][action].item())**2
+    loss = math.pow(reward - QValueTargetModel[0][action].item())
     
     return loss
 
@@ -97,6 +97,8 @@ class ReplayBuffer(object):
 
         print("Sample self = ", self)
         # TODO: Randomly sampling data with specific batch size from the buffer
+
+        #buffer = (self.buffer)
 
         #print("IN SAMPLE ")
         #print("sample self = ", self)
