@@ -48,7 +48,7 @@ episode_reward = 0
 state = env.reset() # initial state 
 
 for frame_idx in range(1, num_frames + 1):  # plays until player or model gets score 21
-    #print("Frame: " + str(frame_idx))      #uncomment to look at frames
+    print("Frame: " + str(frame_idx))      #uncomment to look at frames
 
     epsilon = epsilon_by_frame(frame_idx)
     action = model.act(state, epsilon)      #will write this function
@@ -66,6 +66,7 @@ for frame_idx in range(1, num_frames + 1):  # plays until player or model gets s
 
     if len(replay_buffer) > replay_initial: #if number of plays has reached the limit calculate loss and optimize update model
         loss = compute_td_loss(model, target_model, batch_size, gamma, replay_buffer)
+        print("loss = ", loss)
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()

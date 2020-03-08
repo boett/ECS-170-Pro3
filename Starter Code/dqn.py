@@ -95,7 +95,7 @@ class ReplayBuffer(object):
 
     def sample(self, batch_size):
 
-        print("Sample self = ", self.buffer)
+        #print("Sample self = ", self.buffer)
         # TODO: Randomly sampling data with specific batch size from the buffer
 
         #buffer = (self.buffer)
@@ -103,11 +103,20 @@ class ReplayBuffer(object):
         #print("IN SAMPLE ")
         #print("sample self = ", self)
 
-        state = Variable(torch.FloatTensor(np.float32(state)))
-        next_state = Variable(torch.FloatTensor(np.float32(next_state)).squeeze(1), requires_grad=True)
-        action = Variable(torch.LongTensor(action))
-        reward = Variable(torch.FloatTensor(reward))
-        done = Variable(torch.FloatTensor(done))
+        pullFrom = self.buffer
+
+        state = []
+        next_state = []
+        action = []
+        reward = []
+        done = []
+
+        for i in pullFrom:
+            state.append(pullFrom[i][0])
+            action.append(pullFrom[i][1])   
+            reward.append(pullFrom[i][2])   
+            next_state.append(pullFrom[i][3])
+            done.append(pullFrom[i][4])
 
         return state, action, reward, next_state, done
 
