@@ -82,7 +82,7 @@ def compute_td_loss(model, target_model, batch_size, gamma, replay_buffer): # co
 
     for x in range(batch_size):
         QValueTargetModel = target_model.forward(state[x]).data
-        loss += (reward[x] - QValueTargetModel[x][action[x]].item())**2
+        loss += (reward[x] - QValueTargetModel[0][action[x]].item())**2
 
 
     #QValueTargetModel = target_model.forward(state).data
@@ -111,7 +111,7 @@ class ReplayBuffer(object):
         #print("IN SAMPLE ")
         #print("sample self = ", self)
 
-        pullFrom = self.buffer
+        RandomSample = random.sample(self.buffer, batch_size)
 
         state = []
         action = []
@@ -119,9 +119,8 @@ class ReplayBuffer(object):
         next_state = []
         done = []
 
-        pullFrom = self.buffer
 
-        for frame in pullFrom:
+        for frame in RandomSample:
             state.append(frame[0])
             action.append(frame[1])
             reward.append(frame[2])
