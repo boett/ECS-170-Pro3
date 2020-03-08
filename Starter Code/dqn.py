@@ -111,7 +111,7 @@ class ReplayBuffer(object):
         action = int(pullFrom[i][1])
         reward = int(pullFrom[i][2])
         next_state = pullFrom[i][3]
-        done = list(pullFrom[i][4])
+        done = pullFrom[i][4]
 
 
 
