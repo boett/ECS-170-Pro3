@@ -76,9 +76,15 @@ def compute_td_loss(model, target_model, batch_size, gamma, replay_buffer): # co
     reward = Variable(torch.FloatTensor(reward))
     done = Variable(torch.FloatTensor(done))
     # implement the loss function here
+    loss = 0
 
-    QValueTargetModel = target_model.forward(state).data
-    loss = math.pow(reward - QValueTargetModel[0][action].item())
+    for x in range(batch_size):
+        QValueTargetModel = target_model.forward(state[x]).data
+        loss += math.pow(reward[x] - QValueTargetModel[x][action[x]].item())
+
+
+    #QValueTargetModel = target_model.forward(state).data
+    #loss = math.pow(reward - QValueTargetModel[0][action].item())
     
     return loss
 
