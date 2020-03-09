@@ -89,7 +89,7 @@ def compute_td_loss(model, target_model, batch_size, gamma, replay_buffer): # co
     QValues = target_model.forward(state).data      #all current state Q values of actions choosen
     print("QValues = ", QValues)
 
-    TargetQValues = target_model.forward(next_state)#subsequent states Q values of actions choosen
+    TargetQValues = target_model.forward(next_state).data#subsequent states Q values of actions choosen
     print("TargetQValues = ", TargetQValues)
 
     q_value = QValues.gather(1, action.unsqueeze(1)).squeeze(1)
