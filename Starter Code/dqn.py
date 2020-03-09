@@ -86,15 +86,21 @@ def compute_td_loss(model, target_model, batch_size, gamma, replay_buffer): # co
     # ExpectedQValues = reward + gamma * next_q_value * (1 - done)
     # loss = (q_value - Variable(ExpectedQValues.data, requires_grad = True)).pow(2).mean()
 
-    QValues = model.forward(state).data
-    TargetQValues = target_model.forward(state)
+    QValues = target_model.forward(state).data      #all current state Q values of actions choosen
+    print("QValues = ", QValues)
+
+    TargetQValues = target_model.forward(next_state)#subsequent states Q values of actions choosen
+    print("TargetQValues = ", TargetQValues)
 
     q_value = QValues.gather(1, action.unsqueeze(1)).squeeze(1)
-    next_q_value = TargetQValues.max(1)[0]
+    print("q_value = ", q_value)
 
-    ExpectedQValues = reward + gamma * next_q_value
+    MaxQValue = TargetQValues.max(1)[0]              # getting max Q value of next state of actions choosen
+    print("MaxQValue = ", MaxQValue)
+
+    ExpectedQValues = reward + gamma * MaxQValue
+    print("ExpectedQValue = ", ExpectedQValues)
     loss = (q_value - Variable(ExpectedQValues.data, requires_grad = True)).pow(2).mean()
-
 
 
     return loss
