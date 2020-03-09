@@ -78,22 +78,14 @@ def compute_td_loss(model, target_model, batch_size, gamma, replay_buffer): # co
     # implement the loss function here
     
     q_values = model.forward(state).data
-    print("q-values = ", q_values)
-
     next_q_values = target_model.forward(state)
-    print("next_q_values = ", next_q_values)
 
     q_value = q_values.gather(1, action.unsqueeze(1)).squeeze(1)
-    print("q_value = ", q_value)
-
     next_q_value = next_q_values.max(1)[0]
-    print("next_q_value = ", next_q_value)
 
-    expected_q_value = reward + gamma * next_q_value
-    print("expected_q_value = ", expected_q_value)
+    expected_q_value = reward + gamma * next_q_value * (1 - done)
 
-    loss = (q_value - Variable(expected_q_value.data, requires_grad = True))**2
-    print("lose in compute loss = ", loss)
+    loss = (q_value - Variable(expected_q_value.data, requires_grade = True)).pow(2).mean()
 
 
     # print("target_model = ", target_model)
@@ -151,7 +143,7 @@ class ReplayBuffer(object):
 
         state, action, reward, next_state, done = zip(*random.sample(self.buffer, batch_size))
         state = np.concatenate(state)
-        next_state = np.concatenate(next_state)
+        next_state = np.concatenate(state)
 
 
         return state, action, reward, next_state, done
