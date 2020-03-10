@@ -102,6 +102,8 @@ def compute_td_loss(model, target_model, batch_size, gamma, replay_buffer): # co
     # print("ExpectedQValue = ", ExpectedQValues)
     # loss = (q_value - Variable(ExpectedQValues.data, requires_grad = True)).pow(2).mean()
 
+    return loss
+
 
      
 
