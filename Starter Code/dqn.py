@@ -143,7 +143,7 @@ class ReplayBuffer(object):
 
         state, action, reward, next_state, done = zip(*random.sample(self.buffer, batch_size))
         state = np.concatenate(state)
-        next_state = np.concatenate(state)
+        next_state = np.concatenate(next_state)
 
 
         return state, action, reward, next_state, done
