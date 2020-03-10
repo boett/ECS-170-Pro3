@@ -71,39 +71,39 @@ def compute_td_loss(model, target_model, batch_size, gamma, replay_buffer): # co
     state, action, reward, next_state, done = replay_buffer.sample(batch_size)
 
     state = Variable(torch.FloatTensor(np.float32(state)))
-    next_state = Variable(torch.FloatTensor(np.float32(next_state)))
+    next_state = Variable(torch.FloatTensor(np.float32(next_state)).squeeze(1), requires_grad = True)
     action = Variable(torch.LongTensor(action))
     reward = Variable(torch.FloatTensor(reward))
     done = Variable(torch.FloatTensor(done))
     # implement the loss function here
     
-    # QValues = model.forward(state).data
-    # TargetQValues = target_model.forward(state)
-
-    # q_value = QValues.gather(1, action.unsqueeze(1)).squeeze(1)
-    # next_q_value = TargetQValues.max(1)[0]
-
-    # ExpectedQValues = reward + gamma * next_q_value * (1 - done)
-    # loss = (q_value - Variable(ExpectedQValues.data, requires_grad = True)).pow(2).mean()
-
-    QValues = target_model.forward(state).data      #all current state Q values of actions choosen
-    print("QValues = ", QValues)
-
-    TargetQValues = target_model.forward(next_state)   #subsequent states Q values of actions choosen
-    print("TargetQValues = ", TargetQValues)
+    QValues = model.forward(state).data
+    TargetQValues = target_model.forward(next_state).data
 
     q_value = QValues.gather(1, action.unsqueeze(1)).squeeze(1)
-    print("q_value = ", q_value)
+    next_q_value = TargetQValues.max(1)[0]
 
-    MaxQValue = TargetQValues.max(1)[0]              # getting max Q value of next state of actions choosen
-    print("MaxQValue = ", MaxQValue)
-
-    ExpectedQValues = reward + gamma * MaxQValue
-    print("ExpectedQValue = ", ExpectedQValues)
+    ExpectedQValues = reward + gamma * next_q_value * (1 - done)
     loss = (q_value - Variable(ExpectedQValues.data, requires_grad = True)).pow(2).mean()
 
+    # QValues = target_model.forward(state).data      #all current state Q values of actions choosen
+    # print("QValues = ", QValues)
 
-    return loss
+    # TargetQValues = target_model.forward(next_state)   #subsequent states Q values of actions choosen
+    # print("TargetQValues = ", TargetQValues)
+
+    # q_value = QValues.gather(1, action.unsqueeze(1)).squeeze(1)
+    # print("q_value = ", q_value)
+
+    # MaxQValue = TargetQValues.max(1)[0]              # getting max Q value of next state of actions choosen
+    # print("MaxQValue = ", MaxQValue)
+
+    # ExpectedQValues = reward + gamma * MaxQValue
+    # print("ExpectedQValue = ", ExpectedQValues)
+    # loss = (q_value - Variable(ExpectedQValues.data, requires_grad = True)).pow(2).mean()
+
+
+     
 
 
 class ReplayBuffer(object):
@@ -150,3 +150,10 @@ class ReplayBuffer(object):
 
     def __len__(self):
         return len(self.buffer)
+
+
+
+
+# print out next_state in the loss function to understand what it is
+# and get it to calculate the Q values in the target model for the next state
+# then use that to calculate the loss just using the target model.
