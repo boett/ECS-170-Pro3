@@ -25,7 +25,7 @@ record_idx = 10000          #
 replay_initial = 10000      # number frames that are held
 replay_buffer = ReplayBuffer(100000)
 model = QLearner(env, num_frames, batch_size, gamma, replay_buffer)
-model.load_state_dict(torch.load("model_pretrained.pth", map_location='cpu'))   #loading in the pretrained model
+model.load_state_dict(torch.load("model.pth", map_location='cpu'))   #loading in the pretrained model
 
 target_model = QLearner(env, num_frames, batch_size, gamma, replay_buffer)      #load in model
 target_model.copy_from(model)
@@ -81,7 +81,7 @@ for frame_idx in range(1, num_frames + 1):  # plays until player or model gets s
     if frame_idx % 50000 == 0:
         target_model.copy_from(model)   #updates target model
         print("saved")
-        torch.save(model.state_dict(), "modelUpdate.pth")
+        torch.save(model.state_dict(), "model.pth")
 
 
 
