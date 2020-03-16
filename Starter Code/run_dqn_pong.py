@@ -17,7 +17,7 @@ env = make_atari(env_id)
 env = wrap_deepmind(env)
 env = wrap_pytorch(env)
 
-num_frames = 1000000        # total frames that will be learning from
+num_frames = 2000000        # total frames that will be learning from
 batch_size = 32             # the number of samples that are provided to the model for update services at a given time
 gamma = 0.99                # the discount of future rewards
 record_idx = 10000          #
@@ -81,7 +81,7 @@ for frame_idx in range(1, num_frames + 1):  # plays until player or model gets s
     if frame_idx % 50000 == 0:
         target_model.copy_from(model)   #updates target model
         print("saved")
-        torch.save(model.state_dict(), "model.pth")
+        torch.save(model.state_dict(), "modelUpdate.pth")
 
 
 
