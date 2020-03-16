@@ -17,7 +17,7 @@ env = make_atari(env_id)
 env = wrap_deepmind(env)
 env = wrap_pytorch(env)
 
-num_frames = 2000000        # total frames that will be learning from
+num_frames = 1000000        # total frames that will be learning from
 batch_size = 32             # the number of samples that are provided to the model for update services at a given time
 gamma = 0.99                # the discount of future rewards
 record_idx = 10000          #
@@ -30,7 +30,7 @@ model.load_state_dict(torch.load("model_pretrained.pth", map_location='cpu'))   
 target_model = QLearner(env, num_frames, batch_size, gamma, replay_buffer)      #load in model
 target_model.copy_from(model)
 
-optimizer = optim.Adam(model.parameters(), lr=0.0001)      #learning rate set and optimizing the model
+optimizer = optim.Adam(model.parameters(), lr=0.001)      #learning rate set and optimizing the model
 if USE_CUDA:
     model = model.cuda()            # sends model to gpu
     target_model = target_model.cuda()
