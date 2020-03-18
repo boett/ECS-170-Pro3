@@ -135,21 +135,14 @@ class ReplayBuffer(object):
         reward = []
         next_state = []
         done = []
-
-        state.append(RandomSample[0])
-        action.append(RandomSample[1])
-        reward.append(RandomSample[2])
-        next_state.append(RandomSample[3])
-        done.append(RandomSample[4])
-
         
 
-        # for frame in RandomSample:
-        #     state.append(frame[0])
-        #     action.append(frame[1])
-        #     reward.append(frame[2])
-        #     next_state.append(frame[3])
-        #     done.append(frame[4])
+        for frame in RandomSample:
+            state.append(frame[0])
+            action.append(frame[1])
+            reward.append(frame[2])
+            next_state.append(frame[3])
+            done.append(frame[4])
 
 
         # --------------- This is what works -------------------------
@@ -165,10 +158,3 @@ class ReplayBuffer(object):
 
     def __len__(self):
         return len(self.buffer)
-
-
-
-
-# print out next_state in the loss function to understand what it is
-# and get it to calculate the Q values in the target model for the next state
-# then use that to calculate the loss just using the target model.
