@@ -25,12 +25,12 @@ record_idx = 10000          #
 replay_initial = 10000      # number frames that are held
 replay_buffer = ReplayBuffer(100000)
 model = QLearner(env, num_frames, batch_size, gamma, replay_buffer)
-model.load_state_dict(torch.load("model_pretrained.pth", map_location='cpu'))   #loading in the pretrained model
+model.load_state_dict(torch.load("modelLossSave.pth", map_location='cpu'))   #loading in the pretrained model
 
 target_model = QLearner(env, num_frames, batch_size, gamma, replay_buffer)      #load in model
 target_model.copy_from(model)
 
-optimizer = optim.Adam(model.parameters(), lr=0.001)      #learning rate set and optimizing the model
+optimizer = optim.Adam(model.parameters(), lr=0.0001)      #learning rate set and optimizing the model
 if USE_CUDA:
     model = model.cuda()            # sends model to gpu
     target_model = target_model.cuda()
