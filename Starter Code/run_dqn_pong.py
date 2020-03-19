@@ -30,7 +30,7 @@ model.load_state_dict(torch.load("model_pretrained.pth", map_location='cpu'))   
 target_model = QLearner(env, num_frames, batch_size, gamma, replay_buffer)      #load in model
 target_model.copy_from(model)
 
-optimizer = optim.Adam(model.parameters(), lr=0.0001)      #learning rate set and optimizing the model
+optimizer = optim.Adam(model.parameters(), lr=0.001)      #learning rate set and optimizing the model
 if USE_CUDA:
     model = model.cuda()            # sends model to gpu
     target_model = target_model.cuda()
@@ -81,9 +81,11 @@ for frame_idx in range(1, num_frames + 1):  # plays until player or model gets s
     if frame_idx % 50000 == 0:
         target_model.copy_from(model)   #updates target model
         print("saved")
-        torch.save(model.state_dict(), "modelLossSave.pth")
-        np.save('losses', losses)
-        np.save('all_rewards', all_rewards)
+        torch.save(model.state_dict(), "model2.pth")
+        NPlosses = np.concatenate(losses)
+        AvgReward = np.concatenate(all_rewards)
+        np.save('losses', NPlosses)
+        np.save('all_rewards', AvgReward)
 
 
 

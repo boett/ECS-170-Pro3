@@ -136,7 +136,6 @@ class ReplayBuffer(object):
         next_state = []
         done = []
         
-
         for frame in RandomSample:
             state.append(frame[0])
             action.append(frame[1])
