@@ -25,7 +25,7 @@ record_idx = 10000          #
 replay_initial = 10000      # number frames that are held
 replay_buffer = ReplayBuffer(100000)
 model = QLearner(env, num_frames, batch_size, gamma, replay_buffer)
-model.load_state_dict(torch.load("modelLossSave.pth", map_location='cpu'))   #loading in the pretrained model
+model.load_state_dict(torch.load("model_pretrained.pth", map_location='cpu'))   #loading in the pretrained model
 
 target_model = QLearner(env, num_frames, batch_size, gamma, replay_buffer)      #load in model
 target_model.copy_from(model)
@@ -82,10 +82,9 @@ for frame_idx in range(1, num_frames + 1):  # plays until player or model gets s
         target_model.copy_from(model)   #updates target model
         print("saved")
         torch.save(model.state_dict(), "model2.pth")
-        NPlosses = np.concatenate(losses)
-        AvgReward = np.concatenate(all_rewards)
-        np.save('losses', NPlosses)
-        np.save('all_rewards', AvgReward)
+        savetxt('rewards.csv', all_rewards, delimiter=',')
+        savetxt('losses.csv', losses, delimiter=',')
+
 
 
 
