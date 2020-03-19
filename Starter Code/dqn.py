@@ -77,14 +77,11 @@ def compute_td_loss(model, target_model, batch_size, gamma, replay_buffer): # co
     done = Variable(torch.FloatTensor(done))
     # implement the loss function here
     
-    QValues = model.forward(state)          # gets current model q values
-    TargetQValues = target_model.forward(next_state) # gets current target model q values
+    QValue = model.forward(state).gather(1, action.unsqueeze(1)).squeeze(1)          # gets current model q value
+    TargetQValue = target_model.forward(next_state).max(1)[0] # gets current target model q value
 
-    QValuesAtAction = QValues.gather(1, action.unsqueeze(1)).squeeze(1)
-    NextStateQValues = TargetQValues.max(1)[0]      #gets highest q value
-
-    ExpectedQValues = reward + gamma * NextStateQValues * (1 - done) # calculates loss
-    loss = (QValuesAtAction - Variable(ExpectedQValues.data, requires_grad = True)).pow(2).mean() #turns loss into a tensor so be used in run_dqn_pong.py
+    ExpectedQValues = reward + gamma * TargetQValue * (1 - done) # calculates loss
+    loss = (QValue - Variable(ExpectedQValues.data, requires_grad = True)).pow(2).mean() #turns loss into a tensor so be used in run_dqn_pong.py
 
     # QValues = target_model.forward(state).data      #all current state Q values of actions choosen
     # print("QValues = ", QValues)
@@ -128,25 +125,25 @@ class ReplayBuffer(object):
         #print("IN SAMPLE ")
         #print("sample self = ", self)
 
-        RandomSample = random.sample(self.buffer, batch_size)
+        # RandomSample = random.sample(self.buffer, batch_size)
 
-        state = []
-        action = []
-        reward = []
-        next_state = []
-        done = []
+        # state = []
+        # action = []
+        # reward = []
+        # next_state = []
+        # done = []
         
-        for frame in RandomSample:
-            state.append(frame[0])
-            action.append(frame[1])
-            reward.append(frame[2])
-            next_state.append(frame[3])
-            done.append(frame[4])
+        # for frame in RandomSample:
+        #     state.append(frame[0])
+        #     action.append(frame[1])
+        #     reward.append(frame[2])
+        #     next_state.append(frame[3])
+        #     done.append(frame[4])
 
 
         # --------------- This is what works -------------------------
 
-        # state, action, reward, next_state, done = zip(*random.sample(self.buffer, batch_size)) #takes random sample and organizes it into a single object that can be used to assign each corresponding variable
+        state, action, reward, next_state, done = zip(*random.sample(self.buffer, batch_size)) #takes random sample and organizes it into a single object that can be used to assign each corresponding variable
         state = np.concatenate(state) # need to make into a np array since td_loss uses it as such
         next_state = np.concatenate(next_state)
 
