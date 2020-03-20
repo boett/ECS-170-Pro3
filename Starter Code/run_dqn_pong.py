@@ -9,6 +9,7 @@ import torch.nn as nn
 import torch.optim as optim
 import torch.autograd as autograd 
 import torch.nn.functional as F
+from numpy import savetxt
 USE_CUDA = torch.cuda.is_available()
 from dqn import QLearner, compute_td_loss, ReplayBuffer
 
@@ -82,8 +83,8 @@ for frame_idx in range(1, num_frames + 1):  # plays until player or model gets s
         target_model.copy_from(model)   #updates target model
         print("saved modelFinal")
         torch.save(model.state_dict(), "modelFinal.pth")
-        all_rewards.savetxt('rewards.csv', all_rewards, delimiter=',')
-        losses.savetxt('losses.csv', losses, delimiter=',')
+        savetxt('rewards.csv', all_rewards, delimiter=',')
+        savetxt('losses.csv', losses, delimiter=',')
 
 
 
