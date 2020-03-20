@@ -80,8 +80,8 @@ for frame_idx in range(1, num_frames + 1):  # plays until player or model gets s
 
     if frame_idx % 50000 == 0:
         target_model.copy_from(model)   #updates target model
-        print("saved")
-        torch.save(model.state_dict(), "model2.pth")
+        print("saved modelFinal")
+        torch.save(model.state_dict(), "modelFinal.pth")
         savetxt('rewards.csv', all_rewards, delimiter=',')
         savetxt('losses.csv', losses, delimiter=',')
 
