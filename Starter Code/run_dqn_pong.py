@@ -82,8 +82,8 @@ for frame_idx in range(1, num_frames + 1):  # plays until player or model gets s
         target_model.copy_from(model)   #updates target model
         print("saved modelFinal")
         torch.save(model.state_dict(), "modelFinal.pth")
-        savetxt('rewards.csv', all_rewards, delimiter=',')
-        savetxt('losses.csv', losses, delimiter=',')
+        all_rewards.savetxt('rewards.csv', all_rewards, delimiter=',')
+        losses.savetxt('losses.csv', losses, delimiter=',')
 
 
 
